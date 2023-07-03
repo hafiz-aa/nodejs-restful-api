@@ -130,6 +130,10 @@ Response Body Error :
 
 Endpoint : DELETE /api/users/logout
 
+Headers :
+
+- Authorization : token
+
 Response Body Success:
 
 ```json
