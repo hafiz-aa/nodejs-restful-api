@@ -23,6 +23,7 @@
     "winston": "^3.9.0"
   },
   "jest": {
+    "testEnvironment": "node",
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
     }
