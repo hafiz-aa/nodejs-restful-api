@@ -84,3 +84,68 @@ describe('GET /api/contacts/:contactId', function () {
 		expect(result.status).toBe(404);
 	})
 })
+
+describe('PUT /api/contacts/:contactId', function () {
+	beforeEach(async () => {
+		await createTestUser();
+		await createTestContact();
+	})
+
+	afterEach(async () => {
+		await removeAllTestContacts();
+		await removeTestUser();
+	})
+
+	it('Should can update existing contact', async () => {
+		const testContact = await getTestContact();
+
+		const result = await supertest(web)
+			.put('/api/contacts/' + testContact.id)
+			.set('Authorization', 'test')
+			.send({
+				first_name: "Muhammad",
+				last_name: "Hafiz",
+				email: "hafiz@hfz.com",
+				phone: "0823232311"
+			});
+
+		expect(result.status).toBe(200);
+		expect(result.body.data.id).toBe(testContact.id);
+		expect(result.body.data.first_name).toBe("Muhammad");
+		expect(result.body.data.last_name).toBe("Hafiz");
+		expect(result.body.data.email).toBe("hafiz@hfz.com");
+		expect(result.body.data.phone).toBe("0823232311");
+	});
+
+	it('Should reject if request is invalid', async () => {
+		const testContact = await getTestContact();
+
+		const result = await supertest(web)
+			.put('/api/contacts/' + testContact.id)
+			.set('Authorization', 'test')
+			.send({
+				first_name: "",
+				last_name: "",
+				email: "hafiz",
+				phone: ""
+			});
+
+		expect(result.status).toBe(400);
+	});
+
+	it('Should reject if contact is not found', async () => {
+		const testContact = await getTestContact();
+
+		const result = await supertest(web)
+			.put('/api/contacts/' + testContact.id + 1)
+			.set('Authorization', 'test')
+			.send({
+				first_name: "Muhammad",
+				last_name: "Hafiz",
+				email: "hafiz@hfz.com",
+				phone: "0823232311"
+			});
+
+		expect(result.status).toBe(404);
+	});
+});
