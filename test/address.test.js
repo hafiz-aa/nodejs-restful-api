@@ -124,6 +124,5 @@ describe('GET /api/contacts/:contactId/addresses/:addressId', () => {
 
 		expect(result.status).toBe(404);
 	});
-
 });
 
